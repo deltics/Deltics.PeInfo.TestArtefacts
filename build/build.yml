@@ -69,10 +69,10 @@ stages:
     displayName: Copy artefacts to package project
     steps:
     - powershell: |
-      Copy-Item "$(build.BinariesDirectory)\x86.exe src\Deltics.Pe.TestArtefacts\artefacts\x86.exe"  
-      Copy-Item "$(build.BinariesDirectory)\x64.exe src\Deltics.Pe.TestArtefacts\artefacts\x64.exe"  
-      Copy-Item "$(build.BinariesDirectory)\x86.dll src\Deltics.Pe.TestArtefacts\artefacts\x86.dll"  
-      Copy-Item "$(build.BinariesDirectory)\x64.dll src\Deltics.Pe.TestArtefacts\artefacts\x64.dll"  
+        Copy-Item "$(build.BinariesDirectory)\x86.exe src\Deltics.Pe.TestArtefacts\artefacts\x86.exe"  
+        Copy-Item "$(build.BinariesDirectory)\x64.exe src\Deltics.Pe.TestArtefacts\artefacts\x64.exe"  
+        Copy-Item "$(build.BinariesDirectory)\x86.dll src\Deltics.Pe.TestArtefacts\artefacts\x86.dll"  
+        Copy-Item "$(build.BinariesDirectory)\x64.dll src\Deltics.Pe.TestArtefacts\artefacts\x64.dll"  
 
 - stage: Packaging
   displayName: Packaging
