@@ -17,98 +17,92 @@ pool:
   demands: Delphi
 
 
-stages:
-- stage: BuildBinaries
-  displayName: Build the binary artefacts
-  jobs:
-  - template: delphi-build.yml@congress
-    parameters:
-      delphiVersion: xe4
-      project: ExeWithResources
-      appType: DLL
-      platform: x86
-      postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x86.exe"
-          Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
+jobs:
+- template: delphi-build.yml@congress
+  parameters:
+    delphiVersion: xe4
+    project: ExeWithResources
+    appType: DLL
+    platform: x86
+    postBuild:
+      powershell: |
+        Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x86.exe"
+        Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
 
-  - template: delphi-build.yml@congress
-    parameters:
-      delphiVersion: xe4
-      project: ExeWithResources
-      appType: DLL
-      platform: x64
-      postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x64.exe"
-          Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
+- template: delphi-build.yml@congress
+  parameters:
+    delphiVersion: xe4
+    project: ExeWithResources
+    appType: DLL
+    platform: x64
+    postBuild:
+      powershell: |
+        Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x64.exe"
+        Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
 
-  - template: delphi-build.yml@congress
-    parameters:
-      delphiVersion: xe4
-      project: DllWithResources
-      appType: DLL
-      platform: x86
-      postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(BuildBinariesDirectory)\x86.dll"
-          Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
+- template: delphi-build.yml@congress
+  parameters:
+    delphiVersion: xe4
+    project: DllWithResources
+    appType: DLL
+    platform: x86
+    postBuild:
+      powershell: |
+        Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(BuildBinariesDirectory)\x86.dll"
+        Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
 
-  - template: delphi-build.yml@congress
-    parameters:
-      delphiVersion: xe4
-      project: DllWithResources
-      appType: DLL
-      platform: x64
-      postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(BuildBinariesDirectory)\x64.dll"
-          Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
+- template: delphi-build.yml@congress
+  parameters:
+    delphiVersion: xe4
+    project: DllWithResources
+    appType: DLL
+    platform: x64
+    postBuild:
+      powershell: |
+        Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(BuildBinariesDirectory)\x64.dll"
+        Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
 
-  - job: CopyArtefacts
-    displayName: Copy artefacts to package project
-    steps:
-    - powershell: |
-        Copy-Item "$(build.BinariesDirectory)\x86.exe src\Deltics.Pe.TestArtefacts\artefacts\x86.exe"  
-        Copy-Item "$(build.BinariesDirectory)\x64.exe src\Deltics.Pe.TestArtefacts\artefacts\x64.exe"  
-        Copy-Item "$(build.BinariesDirectory)\x86.dll src\Deltics.Pe.TestArtefacts\artefacts\x86.dll"  
-        Copy-Item "$(build.BinariesDirectory)\x64.dll src\Deltics.Pe.TestArtefacts\artefacts\x64.dll"  
+- job: CopyArtefacts
+  displayName: Copy artefacts to package project
+  steps:
+  - powershell: |
+      Copy-Item "$(build.BinariesDirectory)\x86.exe src\Deltics.Pe.TestArtefacts\artefacts\x86.exe"  
+      Copy-Item "$(build.BinariesDirectory)\x64.exe src\Deltics.Pe.TestArtefacts\artefacts\x64.exe"  
+      Copy-Item "$(build.BinariesDirectory)\x86.dll src\Deltics.Pe.TestArtefacts\artefacts\x86.dll"  
+      Copy-Item "$(build.BinariesDirectory)\x64.dll src\Deltics.Pe.TestArtefacts\artefacts\x64.dll"  
 
-- stage: Packaging
-  displayName: Packaging
-  jobs: 
-  - job: Build the assembly
-    steps:
-    # The first task is the dotnet command build, pointing to our csproj file
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet build'
-      inputs:
-        command: 'build'
-        arguments: '--configuration $(buildConfiguration)'
-        projects: '**/*.csproj'
-      
-    # The second task is dotnet pack command again pointing to the csproj file
-    # The nobuild means the project will not be compiled before running pack, because its already built in above step
-    - task: DotNetCoreCLI@2
-      displayName: "dotnet pack"
-      inputs:
-        command: 'pack'
-        arguments: '--configuration $(buildConfiguration)'
-        packagesToPack: '**/*.csproj'
-        nobuild: true
-        versioningScheme: 'off'
+- job: BuildAssembly
+  steps:
+  # The first task is the dotnet command build, pointing to our csproj file
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build'
+    inputs:
+      command: 'build'
+      arguments: '--configuration $(buildConfiguration)'
+      projects: '**/*.csproj'
+    
+  # The second task is dotnet pack command again pointing to the csproj file
+  # The nobuild means the project will not be compiled before running pack, because its already built in above step
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet pack"
+    inputs:
+      command: 'pack'
+      arguments: '--configuration $(buildConfiguration)'
+      packagesToPack: '**/*.csproj'
+      nobuild: true
+      versioningScheme: 'off'
 
-    # The last task is a nuget command, nuget push
-    # This will push any .nupkg files to the 'TestFeed' artifact feed
-    # allowPackageConflicts allows us to build the same version and not throw an error when trying to push
-    # instead it just ingores the latest package unless the version changes
-    - task: NuGetCommand@2
-      displayName: 'nuget push'
-      inputs:
-        command: 'push'
-        feedsToUse: 'select'
-        packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-        nuGetFeedType: 'internal'
-        publishVstsFeed: 'Feed'
-        versioningScheme: 'off'
-        allowPackageConflicts: true
+  # The last task is a nuget command, nuget push
+  # This will push any .nupkg files to the 'TestFeed' artifact feed
+  # allowPackageConflicts allows us to build the same version and not throw an error when trying to push
+  # instead it just ingores the latest package unless the version changes
+  - task: NuGetCommand@2
+    displayName: 'nuget push'
+    inputs:
+      command: 'push'
+      feedsToUse: 'select'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+      nuGetFeedType: 'internal'
+      publishVstsFeed: 'Feed'
+      versioningScheme: 'off'
+      allowPackageConflicts: true
