@@ -17,7 +17,8 @@ pool:
   demands: Delphi
 
 jobs:
-- job: BuildBinaries
+- job: BuildArtefacts
+  displayName: Build Binary Artefacts
   workspace:
     clean: outputs
   steps:
@@ -62,9 +63,9 @@ jobs:
         powershell: Rename-Item "$(Build.BinariesDirectory)\DllWithResources.dll" "$(Build.BinariesDirectory)\x64.dll"
 
 - job: CopyArtefacts
-  displayName: Copy artefacts to package project
+  displayName: Copy Binary Artefacts to Package Project
   dependsOn:
-    BuildBinaries
+    BuildArtefacts
   steps:
   - powershell: |
       Remove-Item "src\Deltics.Pe.TestArtefacts\artefacts\x86.exe"
@@ -76,7 +77,8 @@ jobs:
       Copy-Item "$(Build.BinariesDirectory)\x86.dll" "src\Deltics.Pe.TestArtefacts\artefacts"
       Copy-Item "$(Build.BinariesDirectory)\x64.dll" "src\Deltics.Pe.TestArtefacts\artefacts"
 
-- job: BuildAssembly
+- job: BuildPackage
+  displayName: Build And Publish Artefacts Package
   dependsOn:
   - CopyArtefacts
   steps:
