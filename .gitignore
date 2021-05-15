@@ -359,5 +359,6 @@ MigrationBackup/
 __history/
 Win32/
 Win64/
+*.identcache
 *.local
 *.res
