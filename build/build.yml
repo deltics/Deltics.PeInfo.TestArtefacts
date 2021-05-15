@@ -125,12 +125,19 @@ jobs:
 #      nuGetFeedType: 'external'
 #      publishFeedCredentials: 'NugetOrgApiKey'
 
-  - task: DotNetCoreCLI@2
-    displayName: push to nuget.org (using workaround)
+  - task: NuGetCommand@2
     inputs:
-      command: custom
-      custom: nuget
-      arguments: >
-        push $(Build.ArtifactStagingDirectory)\*.nupkg
-        -s https://api.nuget.org/v3/index.json
-        -k $(NugetApiKey) 
+      command: push
+      packagesToPush: $(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg
+      nuGetFeedType: external
+      publishFeedCredentials: NugetOrgApiKey
+
+#  - task: DotNetCoreCLI@2
+#    displayName: push to nuget.org (using workaround)
+#    inputs:
+#      command: custom
+#      custom: nuget
+#      arguments: >
+#        push $(Build.ArtifactStagingDirectory)\*.nupkg
+#        -s https://api.nuget.org/v3/index.json
+#        -k $(NugetApiKey) 
