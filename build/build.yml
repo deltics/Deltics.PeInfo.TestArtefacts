@@ -57,7 +57,7 @@ jobs:
           Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(BuildBinariesDirectory)\x86.dll"
           Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
 
-- job: Build x86Dll
+- job: Buildx64Dll
   steps: 
   - template: delphi-build.yml@congress
     parameters:
