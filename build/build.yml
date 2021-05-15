@@ -82,6 +82,12 @@ jobs:
   dependsOn:
   - CopyArtefacts
   steps:
+  # NuGet tool installer
+  # Acquires a specific version of NuGet from the internet or the tools cache and adds it to the PATH. Use this task to change the version of NuGet used in the NuGet tasks.
+  - task: NuGetToolInstaller@1
+    inputs:
+      versionSpec: 5.9.1
+
   # The first task is the dotnet command build, pointing to our csproj file
   - task: DotNetCoreCLI@2
     displayName: 'dotnet build'
