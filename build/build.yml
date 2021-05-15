@@ -23,7 +23,7 @@ jobs:
   - template: delphi-build.yml@congress
     parameters:
       delphiVersion: xe4
-      project: ExeWithResources
+      project: src\Binaries\ExeWithResources
       appType: CONSOLE
       platform: x86
       postBuild:
@@ -36,7 +36,7 @@ jobs:
   - template: delphi-build.yml@congress
     parameters:
       delphiVersion: xe4
-      project: ExeWithResources
+      project: src\Binaries\ExeWithResources
       appType: CONSOLE
       platform: x64
       postBuild:
@@ -49,7 +49,7 @@ jobs:
   - template: delphi-build.yml@congress
     parameters:
       delphiVersion: xe4
-      project: DllWithResources
+      project: src\Binaries\DllWithResources
       appType: DLL
       platform: x86
       postBuild:
@@ -62,7 +62,7 @@ jobs:
   - template: delphi-build.yml@congress
     parameters:
       delphiVersion: xe4
-      project: DllWithResources
+      project: src\Binaries\DllWithResources
       appType: DLL
       platform: x64
       postBuild:
