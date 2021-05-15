@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Tests.Artefacts</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="artefacts\x64.dll" />
+      <EmbeddedResource Include="artefacts\x64.exe" />
+      <EmbeddedResource Include="artefacts\x86.dll" />
+      <EmbeddedResource Include="artefacts\x86.exe" />
+      <EmbeddedResource Remove="src\__history\**" />
+      <EmbeddedResource Remove="src\Win32\**" />
+      <EmbeddedResource Remove="src\Win64\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="src\__history\**" />
+      <Compile Remove="src\Win32\**" />
+      <Compile Remove="src\Win64\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="src\__history\**" />
+      <None Remove="src\Win32\**" />
+      <None Remove="src\Win64\**" />
+      <None Remove="src\DllWithResources.res" />
+      <None Remove="src\DllWithResources.dproj.local" />
+      <None Remove="src\ExeWithResources.res" />
+      <None Remove="src\ExeWithResources.dproj.local" />
+      <None Remove="src\TestArtefactSource.groupproj.local" />
+      <None Remove="src\values.optset" />
+      <None Remove="src\VersionInfoDll.res" />
+      <None Remove="src\VersionInfoExe.res" />
+    </ItemGroup>
+
+</Project>

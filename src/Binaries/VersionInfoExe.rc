@@ -1,0 +1,33 @@
+1 VERSIONINFO
+  FILEVERSION 1,2,3,4
+  PRODUCTVERSION 5,6,7,8
+  FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+  FILEFLAGS (VS_FF_SPECIALBUILD|VS_FF_PRERELEASE)
+  FILEOS VOS__WINDOWS32
+  FILETYPE VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "Comments", "The Comments\0"
+            VALUE "CompanyName", "The Company Name\0"
+            VALUE "FileDescription", "The File Description\0"
+            VALUE "FileVersion", "1.2.3-meta+info\0"
+            VALUE "InternalName", "The Internal Name\0"
+            VALUE "LegalCopyright", "The Legal Copyright\0"
+            VALUE "LegalTrademarks", "The Legal Trademarks\0"
+            VALUE "OriginalFilename", "The Original Filename\0"
+            VALUE "ProductName", "The Product Name\0"
+            VALUE "ProductVersion", "5.6.7.8\0"
+            VALUE "PrivateBuild", "The Private Build\0"
+            VALUE "SpecialBuild", "The Special Build\0"
+            VALUE "CommitHash", "The Commit Hash\0"
+            VALUE "SomeCustomString", "Some Custom String Value\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1252
+    END
+END

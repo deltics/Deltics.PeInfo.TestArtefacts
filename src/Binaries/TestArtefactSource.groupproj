@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{9A9813A6-BA0D-4773-9BC4-A4F4E065FAF7}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ExeWithResources.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="DllWithResources.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ExeWithResources">
+        <MSBuild Projects="ExeWithResources.dproj"/>
+    </Target>
+    <Target Name="ExeWithResources:Clean">
+        <MSBuild Projects="ExeWithResources.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ExeWithResources:Make">
+        <MSBuild Projects="ExeWithResources.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="DllWithResources">
+        <MSBuild Projects="DllWithResources.dproj"/>
+    </Target>
+    <Target Name="DllWithResources:Clean">
+        <MSBuild Projects="DllWithResources.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DllWithResources:Make">
+        <MSBuild Projects="DllWithResources.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ExeWithResources;DllWithResources"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ExeWithResources:Clean;DllWithResources:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ExeWithResources:Make;DllWithResources:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
