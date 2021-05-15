@@ -30,9 +30,7 @@ jobs:
         $rc = $db + '\brcc32.exe VersionInfoExe.rc'
         Invoke-Expression $rc
       postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(Build.BinariesDirectory)\x86.exe"
-          Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
+        powershell: Rename-Item "$(Build.BinariesDirectory)\ExeWithResources.exe" "x86.exe"
 
 - job: Buildx64Exe
   steps:
@@ -46,9 +44,7 @@ jobs:
         $rc = $db + '\brcc32.exe VersionInfoExe.rc'
         Invoke-Expression $rc
       postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(Build.BinariesDirectory)\x64.exe"
-          Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
+        powershell: Rename-Item "$(Build.BinariesDirectory)\ExeWithResources.exe" "x64.exe"
 
 - job: Buildx86Dll
   steps:
@@ -62,9 +58,7 @@ jobs:
         $rc = $db + '\brcc32.exe VersionInfoDll.rc'
         Invoke-Expression $rc
       postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(Build.BinariesDirectory)\x86.dll"
-          Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
+        powershell: Rename-Item "$(Build.BinariesDirectory)\DllWithResources.dll" "x86.dll"
 
 - job: Buildx64Dll
   steps: 
@@ -78,9 +72,7 @@ jobs:
         $rc = $db + '\brcc32.exe VersionInfoDll.rc'
         Invoke-Expression $rc
       postBuild:
-        powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(Build.BinariesDirectory)\x64.dll"
-          Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
+        powershell: Rename-Item "$(Build.BinariesDirectory)\DllWithResources.dll" "x64.dll"
 
 - job: CopyArtefacts
   displayName: Copy artefacts to package project
