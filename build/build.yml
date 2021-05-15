@@ -18,49 +18,57 @@ pool:
 
 
 jobs:
-- template: delphi-build.yml@congress
-  parameters:
-    delphiVersion: xe4
-    project: ExeWithResources
-    appType: DLL
-    platform: x86
-    postBuild:
-      powershell: |
-        Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x86.exe"
-        Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
+- job: Buildx86Exe
+  steps:
+  - template: delphi-build.yml@congress
+    parameters:
+      delphiVersion: xe4
+      project: ExeWithResources
+      appType: CONSOLE
+      platform: x86
+      postBuild:
+        powershell: |
+          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x86.exe"
+          Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
 
-- template: delphi-build.yml@congress
-  parameters:
-    delphiVersion: xe4
-    project: ExeWithResources
-    appType: DLL
-    platform: x64
-    postBuild:
-      powershell: |
-        Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x64.exe"
-        Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
+- job: Buildx64Exe
+  steps:
+  - template: delphi-build.yml@congress
+    parameters:
+      delphiVersion: xe4
+      project: ExeWithResources
+      appType: CONSOLE
+      platform: x64
+      postBuild:
+        powershell: |
+          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x64.exe"
+          Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
 
-- template: delphi-build.yml@congress
-  parameters:
-    delphiVersion: xe4
-    project: DllWithResources
-    appType: DLL
-    platform: x86
-    postBuild:
-      powershell: |
-        Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(BuildBinariesDirectory)\x86.dll"
-        Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
+- job: Buildx86Dll
+  steps:
+  - template: delphi-build.yml@congress
+    parameters:
+      delphiVersion: xe4
+      project: DllWithResources
+      appType: DLL
+      platform: x86
+      postBuild:
+        powershell: |
+          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(BuildBinariesDirectory)\x86.dll"
+          Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
 
-- template: delphi-build.yml@congress
-  parameters:
-    delphiVersion: xe4
-    project: DllWithResources
-    appType: DLL
-    platform: x64
-    postBuild:
-      powershell: |
-        Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(BuildBinariesDirectory)\x64.dll"
-        Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
+- job: Build x86Dll
+  steps: 
+  - template: delphi-build.yml@congress
+    parameters:
+      delphiVersion: xe4
+      project: DllWithResources
+      appType: DLL
+      platform: x64
+      postBuild:
+        powershell: |
+          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(BuildBinariesDirectory)\x64.dll"
+          Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
 
 - job: CopyArtefacts
   displayName: Copy artefacts to package project
