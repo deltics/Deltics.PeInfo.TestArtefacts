@@ -26,6 +26,9 @@ jobs:
       project: src\Binaries\ExeWithResources
       appType: CONSOLE
       platform: x86
+      preBuildInline: |
+        $rc = $db + '\brcc32.exe VersionInfoExe.rc'
+        Invoke-Expression $rc
       postBuild:
         powershell: |
           Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x86.exe"
@@ -39,6 +42,9 @@ jobs:
       project: src\Binaries\ExeWithResources
       appType: CONSOLE
       platform: x64
+      preBuildInline: |
+        $rc = $db + '\brcc32.exe VersionInfoExe.rc'
+        Invoke-Expression $rc
       postBuild:
         powershell: |
           Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x64.exe"
@@ -52,6 +58,9 @@ jobs:
       project: src\Binaries\DllWithResources
       appType: DLL
       platform: x86
+      preBuildInline: |
+        $rc = $db + '\brcc32.exe VersionInfoDll.rc'
+        Invoke-Expression $rc
       postBuild:
         powershell: |
           Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(BuildBinariesDirectory)\x86.dll"
@@ -65,6 +74,9 @@ jobs:
       project: src\Binaries\DllWithResources
       appType: DLL
       platform: x64
+      preBuildInline: |
+        $rc = $db + '\brcc32.exe VersionInfoDll.rc'
+        Invoke-Expression $rc
       postBuild:
         powershell: |
           Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(BuildBinariesDirectory)\x64.dll"
