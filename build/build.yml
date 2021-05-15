@@ -16,9 +16,10 @@ pool:
   name: $(AgentPool)
   demands: Delphi
 
-
 jobs:
-- job: Buildx86Exe
+- job: BuildBinaries
+  workspace:
+    clean: outputs
   steps:
   - template: delphi-build.yml@congress
     parameters:
@@ -30,8 +31,6 @@ jobs:
       postBuild:
         powershell: Rename-Item "$(Build.BinariesDirectory)\ExeWithResources.exe" "$(Build.BinariesDirectory)\x86.exe"
 
-- job: Buildx64Exe
-  steps:
   - template: delphi-build.yml@congress
     parameters:
       delphiVersion: xe4
@@ -42,8 +41,6 @@ jobs:
       postBuild:
         powershell: Rename-Item "$(Build.BinariesDirectory)\ExeWithResources.exe" "$(Build.BinariesDirectory)\x64.exe"
 
-- job: Buildx86Dll
-  steps:
   - template: delphi-build.yml@congress
     parameters:
       delphiVersion: xe4
@@ -54,8 +51,6 @@ jobs:
       postBuild:
         powershell: Rename-Item "$(Build.BinariesDirectory)\DllWithResources.dll" "$(Build.BinariesDirectory)\x86.dll"
 
-- job: Buildx64Dll
-  steps: 
   - template: delphi-build.yml@congress
     parameters:
       delphiVersion: xe4
@@ -68,14 +63,22 @@ jobs:
 
 - job: CopyArtefacts
   displayName: Copy artefacts to package project
+  dependsOn:
+    BuildBinaries
   steps:
   - powershell: |
-      Copy-Item "$(build.BinariesDirectory)\x86.exe src\Deltics.Pe.TestArtefacts\artefacts\x86.exe"  
-      Copy-Item "$(build.BinariesDirectory)\x64.exe src\Deltics.Pe.TestArtefacts\artefacts\x64.exe"  
-      Copy-Item "$(build.BinariesDirectory)\x86.dll src\Deltics.Pe.TestArtefacts\artefacts\x86.dll"  
-      Copy-Item "$(build.BinariesDirectory)\x64.dll src\Deltics.Pe.TestArtefacts\artefacts\x64.dll"  
+      Remove-Item "src\Deltics.Pe.TestArtefacts\artefacts\x86.exe"
+      Remove-Item "src\Deltics.Pe.TestArtefacts\artefacts\x64.exe"
+      Remove-Item "src\Deltics.Pe.TestArtefacts\artefacts\x86.dll"
+      Remove-Item "src\Deltics.Pe.TestArtefacts\artefacts\x64.dll"
+      Copy-Item "$(Build.BinariesDirectory)\x86.exe" "src\Deltics.Pe.TestArtefacts\artefacts"
+      Copy-Item "$(Build.BinariesDirectory)\x64.exe" "src\Deltics.Pe.TestArtefacts\artefacts"
+      Copy-Item "$(Build.BinariesDirectory)\x86.dll" "src\Deltics.Pe.TestArtefacts\artefacts"
+      Copy-Item "$(Build.BinariesDirectory)\x64.dll" "src\Deltics.Pe.TestArtefacts\artefacts"
 
 - job: BuildAssembly
+  dependsOn:
+  - CopyArtefacts
   steps:
   # The first task is the dotnet command build, pointing to our csproj file
   - task: DotNetCoreCLI@2
