@@ -31,7 +31,7 @@ jobs:
         Invoke-Expression $rc
       postBuild:
         powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x86.exe"
+          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(Build.BinariesDirectory)\x86.exe"
           Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
 
 - job: Buildx64Exe
@@ -47,7 +47,7 @@ jobs:
         Invoke-Expression $rc
       postBuild:
         powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(BuildBinariesDirectory)\x64.exe"
+          Copy-Item "$(Build.BinariesDirectory)\ExeWithResources.exe $(Build.BinariesDirectory)\x64.exe"
           Remove-Item "$(Build.BinariesDirectory)\ExeWithResources.exe"
 
 - job: Buildx86Dll
@@ -63,7 +63,7 @@ jobs:
         Invoke-Expression $rc
       postBuild:
         powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(BuildBinariesDirectory)\x86.dll"
+          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.exe $(Build.BinariesDirectory)\x86.dll"
           Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
 
 - job: Buildx64Dll
@@ -79,7 +79,7 @@ jobs:
         Invoke-Expression $rc
       postBuild:
         powershell: |
-          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(BuildBinariesDirectory)\x64.dll"
+          Copy-Item "$(Build.BinariesDirectory)\DllWithResources.dll $(Build.BinariesDirectory)\x64.dll"
           Remove-Item "$(Build.BinariesDirectory)\DllWithResources.dll"
 
 - job: CopyArtefacts
